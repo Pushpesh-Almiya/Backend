@@ -158,7 +158,7 @@ const logoutUser = asyncHandler(async (req, res) => {
     req.user._id,
     {
       $unset: {
-        refreshToken: 1,
+        refreshToken: 1, //This removes the field from document
       },
     },
     {
@@ -250,7 +250,7 @@ const getCurrentUser = asyncHandler(async (req, res) => {
 
 const updateAccountDetails = asyncHandler(async (req, res) => {
   const { email, userName, fullName } = req.body;
-  if (!email || !userName || !fullName) {
+  if (!(email || userName || fullName)) {
     throw new ApiError(400, "All fields are required!!!!!!!!");
   }
   const user = await User.findByIdAndUpdate(
@@ -372,7 +372,7 @@ const getUserChannelProfile = asyncHandler (async (req,res)=>{
   if(!channel?.length){
     throw new ApiError(400,"Channel doesn't exists!!!")
   }
-  console.log("channel ", channel);
+  // console.log("channel ", channel);
   return res.status(200).json(new ApiResponse(200,channel[0],"User channel fatched successfully!!!!!!"))
   
 })
@@ -419,6 +419,7 @@ const getWatchHistory = asyncHandler (async (req,res)=>{
     }
   ])
 
+  // console.log(user)
   return res.status(200).json(
     new ApiResponse(200,user[0].watchHistory,'Watch history fetched successfully')
   )
