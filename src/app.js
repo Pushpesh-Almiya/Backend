@@ -22,6 +22,7 @@ import videoRouter from "./routes/video.routes.js"
 import healthcheckRouter from "./routes/healthcheck.routes.js"
 import playlistRouter from "./routes/platylist.routes.js"
 import tweetRouter from "./routes/tweet.routes.js"
+import likeRouter from "./routes/like.routes.js"
 
 
 
@@ -33,6 +34,7 @@ app.use("/api/v1/videos", videoRouter)
 app.use("/api/v1/healthcheck", healthcheckRouter)
 app.use("/api/v1/playlist", playlistRouter)
 app.use("/api/v1/tweets", tweetRouter)
+app.use("/api/v1/likes", likeRouter)
 
 
 export {app}
