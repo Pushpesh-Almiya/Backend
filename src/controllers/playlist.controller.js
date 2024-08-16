@@ -19,7 +19,7 @@ const createPlaylist = asyncHandler(async (req, res) => {
     throw new ApiError(400, "Error while creating the playlist!!!!!!");
   }
 
-  res
+  return res
     .status(200)
     .json(new ApiResponse(200, newPlaylist, "Playlist created successfully😊"));
 });
@@ -35,7 +35,7 @@ const getUserPlaylists = asyncHandler(async (req, res) => {
   if (!userPlaylists) {
     throw new ApiError(400, "Cann't find user's playlists");
   }
-  res
+  return res
     .status(200)
     .json(
       new ApiResponse(200, userPlaylists, "playlist fetched successfully😊")
@@ -52,7 +52,7 @@ const getPlaylistById = asyncHandler(async (req, res) => {
   if (!playLists) {
     throw new ApiError(400, "Playlist is not found!!!!!!!!!");
   }
-  res
+  return res
     .status(200)
     .json(new ApiResponse(200, playLists, "Playlists fetched successfully😊"));
 });
@@ -78,7 +78,7 @@ const addVideoToPlaylist = asyncHandler(async (req, res) => {
   if (!newPlaylist) {
     throw new ApiError(400, "Playlist is not found!!");
   }
-  res
+  return res
     .status(200)
     .json(
       new ApiResponse(200, newPlaylist, "Video added into the playlist 😊")
@@ -102,11 +102,18 @@ const removeVideoFromPlaylist = asyncHandler(async (req, res) => {
       new: true,
     }
   );
-  if (!newPlaylist){
-    throw new ApiError(400 ,"Playlist not found or Error while removing the video from the playlist")
+  if (!newPlaylist) {
+    throw new ApiError(
+      400,
+      "Playlist not found or Error while removing the video from the playlist"
+    );
   }
 
-  res.status(200).json(new ApiResponse (200,newPlaylist,"Removed video from the playlist 😊"))
+  return res
+    .status(200)
+    .json(
+      new ApiResponse(200, newPlaylist, "Removed video from the playlist 😊")
+    );
 });
 
 const updatePlaylist = asyncHandler(async (req, res) => {
@@ -116,38 +123,57 @@ const updatePlaylist = asyncHandler(async (req, res) => {
   if (!isValidObjectId(playlistId)) {
     throw new ApiError(400, "Invalid playlist ID");
   }
-  if (!(name || description)){
+  if (!(name || description)) {
     // (!name || !description )
-    throw new ApiError(400, "Atleast one field is required (name or description)!!!")
+    throw new ApiError(
+      400,
+      "Atleast one field is required (name or description)!!!"
+    );
   }
 
   const updatedPlaylist = await Playlist.findByIdAndUpdate(
-    playlistId,{
-        name,
-        description
-    },{
-        new: true
+    playlistId,
+    {
+      name,
+      description,
+    },
+    {
+      new: true,
     }
-  )
-  if(!updatePlaylist){
-    throw new ApiError(400,"Playlist not found or error while updating the playlist")
+  );
+  if (!updatePlaylist) {
+    throw new ApiError(
+      400,
+      "Playlist not found or error while updating the playlist"
+    );
   }
-  res.status(200).json(new ApiResponse(200, updatedPlaylist, "Playlist updated Successfully 😊"))
+  return res
+    .status(200)
+    .json(
+      new ApiResponse(200, updatedPlaylist, "Playlist updated Successfully 😊")
+    );
 });
 
 const deletePlaylist = asyncHandler(async (req, res) => {
-    const { playlistId } = req.params;
-    // TODO: delete playlist
-    if (!isValidObjectId(playlistId)) {
-        throw new ApiError(400, "Invalid playlist ID");
-      }
+  const { playlistId } = req.params;
+  // TODO: delete playlist
+  if (!isValidObjectId(playlistId)) {
+    throw new ApiError(400, "Invalid playlist ID");
+  }
 
-    const deletedPlaylist = await Playlist.findByIdAndDelete(playlistId);
-    if(!deletedPlaylist){
-        throw new ApiError(400,"Playlist not found or error while deleting the playlist")
-    }
-    res.status(200).json(new ApiResponse(200, deletedPlaylist, "Playlist updated Successfully 😊"))
-  });
+  const deletedPlaylist = await Playlist.findByIdAndDelete(playlistId);
+  if (!deletedPlaylist) {
+    throw new ApiError(
+      400,
+      "Playlist not found or error while deleting the playlist"
+    );
+  }
+  return res
+    .status(200)
+    .json(
+      new ApiResponse(200, deletedPlaylist, "Playlist updated Successfully 😊")
+    );
+});
 export {
   createPlaylist,
   getUserPlaylists,

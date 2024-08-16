@@ -49,7 +49,7 @@ const getVideoComments = asyncHandler(async (req, res) => {
   if (comments.length ===0){
     throw new ApiError(400 ,"No comments in this video")
   }
-  res
+  return res
     .status(200)
     .json(
       new ApiResponse(200, comments, "All comments fetched successfully✅😊")
@@ -97,7 +97,7 @@ const updateComment = asyncHandler(async (req, res) => {
     { new: true }
   );
 
-  res
+  return res
     .status(200)
     .json(new ApiResponse(200, updatedComment, "Comment Updated Successfully"));
 });
@@ -112,7 +112,7 @@ const deleteComment = asyncHandler(async (req, res) => {
   // }
   const deletedComment = await Comment.findOneAndDelete(commentId);
 
-  res.status(200).json(200, deletedComment, "Comment deleted😊");
+  return res.status(200).json(200, deletedComment, "Comment deleted 😊");
 });
 
 export { getVideoComments, addComment, updateComment, deleteComment };

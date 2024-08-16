@@ -22,7 +22,7 @@ const createTweet = asyncHandler(async (req, res) => {
     if (!tweet){
         throw new ApiError(400,"Error while tweet!!!!!!!")
     }
-    res.status(200).json(new ApiResponse(200,tweet,"Tweet successfull ✅😊"))
+    return res.status(200).json(new ApiResponse(200,tweet,"Tweet successfull ✅😊"))
 })
 
 const getUserTweets = asyncHandler(async (req, res) => {
@@ -52,7 +52,7 @@ const getUserTweets = asyncHandler(async (req, res) => {
         {$unwind :"$userDetails"}
     ])
 
-    res.status(200).json(new ApiResponse(200,userTweets,"Tweets fetched successfull ✅😊"))
+    return res.status(200).json(new ApiResponse(200,userTweets,"Tweets fetched successfull ✅😊"))
 })
 
 const updateTweet = asyncHandler(async (req, res) => {
@@ -75,7 +75,7 @@ const updateTweet = asyncHandler(async (req, res) => {
         throw new ApiError(400,"Tweet is not found or error while updating the tweet!!!!!!!!!")
     }
 
-    res.status(200).json(new ApiResponse(200,updatedTweet,"Tweet updated successfully ✅😊"))
+    return res.status(200).json(new ApiResponse(200,updatedTweet,"Tweet updated successfully ✅😊"))
 })
 
 const deleteTweet = asyncHandler(async (req, res) => {
@@ -89,7 +89,7 @@ const deleteTweet = asyncHandler(async (req, res) => {
         throw new ApiError(400,"Tweet is not find or error while deleting the tweet!!!!!!!!!")
     }
 
-    res.status(200).json(new ApiResponse(200,deletedTweet,"Tweet deleted successfully ✅😊"))
+    return res.status(200).json(new ApiResponse(200,deletedTweet,"Tweet deleted successfully ✅😊"))
 })
 
 export {
