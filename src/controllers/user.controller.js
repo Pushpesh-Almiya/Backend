@@ -5,6 +5,7 @@ import uploadOnCloudinary from "../utils/cloudinary.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import jwt from "jsonwebtoken";
 import mongoose from "mongoose";
+import { isValidObjectId } from "mongoose";
 
 const generateAccessAndRefreshTokens = async (userId) => {
   try {
@@ -248,6 +249,23 @@ const getCurrentUser = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, user, "Current user fatched successfully"));
 });
 
+const getUserById = asyncHandler(async(req,res)=>{
+  const { userId } = req.params;
+
+  //TODO: get video by id
+  if (!isValidObjectId(userId)) {
+    throw new ApiError(400, "User Id is invalid or not empty");
+  }
+  const userDetails = await User.findById(userId).select("-password");
+  
+  if (!userDetails) {
+    throw new ApiError(400, "User not found");
+  }
+  return res
+    .status(200)
+    .json(new ApiResponse(200, userDetails, "User fetched successfully"));
+})
+
 const updateAccountDetails = asyncHandler(async (req, res) => {
   const { email, userName, fullName } = req.body;
   if (!(email || userName || fullName)) {
@@ -429,6 +447,7 @@ export {
   registerUser,
   loginUser,
   logoutUser,
+  getUserById,
   refreshAccessToken,
   changeCurrentPassword,
   getCurrentUser,

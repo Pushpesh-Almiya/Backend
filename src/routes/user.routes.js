@@ -3,6 +3,7 @@ import {
   loginUser,
   registerUser,
   logoutUser,
+  getUserById,
   refreshAccessToken,
   changeCurrentPassword,
   getCurrentUser,
@@ -38,6 +39,7 @@ router.route("/logout").post(verifyJWT, logoutUser);
 router.route("/refresh-token").post(refreshAccessToken);
 router.route("/change-password").post(verifyJWT, changeCurrentPassword);
 router.route("/current-user").get(verifyJWT, getCurrentUser);
+router.route("/user/:userId").get(verifyJWT, getUserById);
 router.route("/update-account").patch(verifyJWT, updateAccountDetails);
 router
   .route("/avatar")
