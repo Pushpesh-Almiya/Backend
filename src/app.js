@@ -29,7 +29,7 @@ import dashboardRouter from "./routes/dashboard.routes.js"
 
 
 //routes declaration
-// http://localhost:8000/api/v1/
+// http://localhost:8000/api/v1/comments
 app.use("/api/v1/users", userRouter)
 app.use("/api/v1/comments", commentRouter)
 app.use("/api/v1/videos", videoRouter)

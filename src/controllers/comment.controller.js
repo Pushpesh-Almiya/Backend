@@ -40,14 +40,18 @@ const getVideoComments = asyncHandler(async (req, res) => {
         video :1,
         createdAt :1,
         userId :"$userDetails._id",
-        userNmaePummy :"$userDetails.userName",
+        userName :"$userDetails.userName",
         fullName :"$userDetails.fullName",
         avatar :"$userDetails.avatar"
       }
     }
   ]);
   if (comments.length ===0){
-    throw new ApiError(400 ,"No comments in this video")
+    return res
+    .status(200)
+    .json(
+      new ApiResponse(200, [], "No comments in this video")
+    );
   }
   return res
     .status(200)
@@ -103,16 +107,19 @@ const updateComment = asyncHandler(async (req, res) => {
 });
 
 const deleteComment = asyncHandler(async (req, res) => {
-  const { commentId } = req.body;
-  if (!commentId || commentId.trim() === "") {
+  const { commentId } = req.params;
+  if (!isValidObjectId(commentId)) {
     throw new ApiError(400, "Comment id is not found");
   }
   //   if (!mongoose.isValidObjectId(commentId)) {
   //     throw new ApiError(400, "Comment ID is not valid");
   // }
-  const deletedComment = await Comment.findOneAndDelete(commentId);
-
-  return res.status(200).json(200, deletedComment, "Comment deleted 😊");
+  const deletedComment = await Comment.findByIdAndDelete(commentId);
+  
+  if (!deletedComment){
+    return res.status(404).json(new ApiResponse(404,{}, "Comment Not found"));
+  }
+  return res.status(200).json(new ApiResponse(200, deletedComment, "Comment deleted 😊"));
 });
 
 export { getVideoComments, addComment, updateComment, deleteComment };
